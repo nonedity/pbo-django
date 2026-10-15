@@ -4,7 +4,8 @@
 <script src="{% static 'cv/js/script.js' %}"></script>
 {% block konten %}
 <div class="container py-5">
-    <img src="{% static 'cv/img/foto' %}" alt="Foto {{ profil.nama }}" class="rounded-circle shadow foto-profil">
+    <img src="{% static 'cv/img/foto-square.jpg' %}" alt="Foto {{ profil.nama }}"
+        class="rounded-circle shadow foto-profil">
     <h1>{{ profil.nama }}</h1>
     <p class="lead">{{ profil.profesi }}</p>
     <p>{{ profil.tentang }}</p>
