@@ -1,9 +1,18 @@
-from django.shortcuts import get_object_or_404, render
+from django.http import Http404
+from django.shortcuts import render
 
-from .moderls import Profil
+from .models import Profil
 
 
 def index(request):
-    profil = get_object_or_404(Profil, pk=2)
-    context = {"profil": profil, "keahlian": profil.keahlian_set.all()}
+    profil = Profil.objects.order_by("-pk").first()
+    if profil is None:
+        raise Http404("Profil belum diisi. Isi dulu lewat /admin/.")
+
+    context = {
+        "profil": profil,
+        "keahlian": profil.keahlian_set.all(),
+        "pendidikan": profil.pendidikan_set.all(),
+        "proyek": profil.proyek_set.all(),
+    }
     return render(request, "cv/index.html", context)

@@ -1,0 +1,165 @@
+{% extends "cv/base.html" %}
+{% load static %}
+
+{% block title %}{{ profil.nama }} | {{ profil.profesi }}{% endblock %}
+{% block description %}CV {{ profil.nama }}, {{ profil.profesi }}{% endblock %}
+
+{% block navbar %}
+<nav class="navbar navbar-expand-md bg-white border-bottom sticky-top shadow-sm">
+    <div class="container">
+        <a class="navbar-brand fw-semibold" href="#beranda">{{ profil.nama }}</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu"
+            aria-controls="navMenu" aria-expanded="false" aria-label="Buka menu navigasi">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navMenu">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="#tentang">Tentang</a>
+                </li>
+                {% if keahlian %}
+                <li class="nav-item">
+                    <a class="nav-link" href="#keahlian">Keahlian</a>
+                </li>
+                {% endif %}
+                {% if pendidikan %}
+                <li class="nav-item">
+                    <a class="nav-link" href="#pendidikan">Pendidikan</a>
+                </li>
+                {% endif %}
+                {% if proyek %}
+                <li class="nav-item">
+                    <a class="nav-link" href="#proyek">Proyek</a>
+                </li>
+                {% endif %}
+                <li class="nav-item">
+                    <a class="nav-link" href="#kontak">Kontak</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+{% endblock %}
+
+{% block konten %}
+<!-- Hero -->
+<header id="beranda" class="hero text-center py-5">
+    <div class="container py-4">
+        {% if profil.foto %}
+        <img src="{{ profil.foto.url }}" alt="Foto {{ profil.nama }}" class="rounded-circle shadow foto-profil mb-4">
+        {% else %}
+        <img src="{% static 'cv/img/foto-square.jpg' %}" alt="Foto {{ profil.nama }}"
+            class="rounded-circle shadow foto-profil mb-4">
+        {% endif %}
+        <h1 class="display-5 fw-bold mb-2">{{ profil.nama }}</h1>
+        <p class="lead text-secondary mb-4">{{ profil.profesi }}</p>
+        <div class="d-flex flex-wrap justify-content-center gap-2">
+            <a href="mailto:{{ profil.email }}" class="btn btn-primary btn-lg">
+                <i class="bi bi-envelope me-2" aria-hidden="true"></i>Hubungi Saya
+            </a>
+            {% if proyek %}
+            <a href="#proyek" class="btn btn-outline-primary btn-lg">Lihat Proyek</a>
+            {% endif %}
+        </div>
+    </div>
+</header>
+
+<div class="container pb-5">
+
+    <!-- Tentang -->
+    <section id="tentang" class="section-anchor reveal mb-5" aria-labelledby="judul-tentang">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body p-4 p-md-5">
+                <h2 id="judul-tentang" class="h4 mb-3">Tentang Saya</h2>
+                <p class="mb-0 text-body-secondary">{{ profil.tentang|linebreaksbr }}</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Keahlian -->
+    {% if keahlian %}
+    <section id="keahlian" class="section-anchor reveal mb-5" aria-labelledby="judul-keahlian">
+        <h2 id="judul-keahlian" class="h4 mb-3">Keahlian</h2>
+        <ul class="list-unstyled d-flex flex-wrap gap-2 mb-0">
+            {% for k in keahlian %}
+            <li><span class="badge rounded-pill text-bg-primary fs-6 fw-medium px-3 py-2">{{ k.nama }}</span></li>
+            {% endfor %}
+        </ul>
+    </section>
+    {% endif %}
+
+    <!-- Pendidikan -->
+    {% if pendidikan %}
+    <section id="pendidikan" class="section-anchor reveal mb-5" aria-labelledby="judul-pendidikan">
+        <h2 id="judul-pendidikan" class="h4 mb-4">Riwayat Pendidikan</h2>
+        <ol class="timeline list-unstyled mb-0">
+            {% for p in pendidikan %}
+            <li class="timeline-item">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body">
+                        <span class="badge text-bg-light border mb-2">
+                            {{ p.tahun_mulai }} &ndash; {{ p.tahun_selesai|default:"Sekarang" }}
+                        </span>
+                        <h3 class="h6 mb-1">{{ p.jurusan }}</h3>
+                        <p class="mb-0 text-body-secondary">{{ p.institusi }}</p>
+                    </div>
+                </div>
+            </li>
+            {% endfor %}
+        </ol>
+    </section>
+    {% endif %}
+
+    <!-- Proyek -->
+    {% if proyek %}
+    <section id="proyek" class="section-anchor reveal mb-5" aria-labelledby="judul-proyek">
+        <h2 id="judul-proyek" class="h4 mb-3">Pengalaman &amp; Proyek</h2>
+        <div class="row row-cols-1 row-cols-md-2 g-4">
+            {% for pr in proyek %}
+            <div class="col">
+                <article class="card h-100 border-0 shadow-sm card-hover">
+                    <div class="card-body d-flex flex-column">
+                        <div class="d-flex justify-content-between align-items-start gap-2 mb-2">
+                            <h3 class="h5 mb-0">{{ pr.judul }}</h3>
+                            <span class="badge text-bg-secondary">{{ pr.tahun }}</span>
+                        </div>
+                        {% if pr.deskripsi %}
+                        <p class="text-body-secondary">{{ pr.deskripsi|linebreaksbr }}</p>
+                        {% endif %}
+                        {% if pr.tautan %}
+                        <a href="{{ pr.tautan }}" class="btn btn-sm btn-outline-primary mt-auto align-self-start"
+                            target="_blank" rel="noopener noreferrer">
+                            Lihat proyek <i class="bi bi-box-arrow-up-right ms-1" aria-hidden="true"></i>
+                            <span class="visually-hidden">(buka di tab baru)</span>
+                        </a>
+                        {% endif %}
+                    </div>
+                </article>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
+
+    <!-- Kontak -->
+    <section id="kontak" class="section-anchor reveal" aria-labelledby="judul-kontak">
+        <div class="card border-0 shadow-sm text-center">
+            <div class="card-body p-4 p-md-5">
+                <h2 id="judul-kontak" class="h4 mb-3">Mari Terhubung</h2>
+                <p class="text-body-secondary">Tertarik bekerja sama atau ingin berdiskusi? Kirim email kapan saja.</p>
+                <a href="mailto:{{ profil.email }}" class="btn btn-primary">
+                    <i class="bi bi-envelope me-2" aria-hidden="true"></i>{{ profil.email }}
+                </a>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}
+
+{% block footer %}
+<footer class="border-top bg-white py-4 text-center text-body-secondary small">
+    <div class="container">
+        &copy; {% now "Y" %} {{ profil.nama }}. Dibuat dengan Django &amp; Bootstrap.
+    </div>
+</footer>
+{% endblock %}

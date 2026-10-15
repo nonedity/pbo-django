@@ -1,5 +1,90 @@
+/* Foto profil */
 .foto-profil {
     width: 160px;
     height: 160px;
     object-fit: cover;
+    border: 4px solid #fff;
+}
+
+/* Hero */
+.hero {
+    background: linear-gradient(180deg, #e7f0ff 0%, var(--bs-light) 100%);
+}
+
+/* Navigasi: scroll halus + jarak agar judul tidak tertutup navbar */
+html {
+    scroll-behavior: smooth;
+}
+
+.section-anchor {
+    scroll-margin-top: 80px;
+}
+
+.navbar .nav-link.active {
+    color: var(--bs-primary);
+    font-weight: 600;
+}
+
+/* Timeline pendidikan */
+.timeline {
+    position: relative;
+    padding-left: 1.75rem;
+    border-left: 2px solid var(--bs-border-color);
+}
+
+.timeline-item {
+    position: relative;
+    margin-bottom: 1.25rem;
+}
+
+.timeline-item:last-child {
+    margin-bottom: 0;
+}
+
+.timeline-item::before {
+    content: "";
+    position: absolute;
+    left: calc(-1.75rem - 7px);
+    top: 1.4rem;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--bs-primary);
+    box-shadow: 0 0 0 4px var(--bs-light);
+}
+
+/* Kartu proyek */
+.card-hover {
+    transition: transform .2s ease, box-shadow .2s ease;
+}
+
+.card-hover:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 .5rem 1.25rem rgba(0, 0, 0, .12) !important;
+}
+
+/* Animasi muncul saat di-scroll (hanya aktif jika JS jalan) */
+.js .reveal {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity .5s ease, transform .5s ease;
+}
+
+.js .reveal.is-visible {
+    opacity: 1;
+    transform: none;
+}
+
+/* Hormati pengguna yang mematikan animasi */
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+
+    .js .reveal,
+    .card-hover {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
 }
